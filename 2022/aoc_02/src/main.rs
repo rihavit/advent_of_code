@@ -41,16 +41,16 @@ fn main() {
         ])),
     ]);
 
-    get_score(&input, &score_rules_one);
-    get_score(&input, &score_rules_two);
+    println!("Part one: {}", get_score(&input, &score_rules_one));
+    println!("Part two: {}", get_score(&input, &score_rules_two));
 }
 
-fn get_score(input: &String, score_rules: &HashMap<&str, HashMap<&str, i32>>) {
+fn get_score(input: &String, score_rules: &HashMap<&str, HashMap<&str, i32>>) -> i32 {
     let mut score = 0;
     for round in input.split('\n') {
         if round.is_empty() {continue;}
         let [shape_a, shape_b] = <[&str; 2]>::try_from(round.split_whitespace().take(2).collect::<Vec<&str>>()).ok().unwrap();
         score += score_rules.get(shape_a).unwrap().get(shape_b).unwrap();
     }
-    println!("Part one: {score}");
+    return score;
 }
