@@ -1,11 +1,8 @@
 use std::collections::HashMap;
-use std::{env, fs};
+mod input_reader;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let executable_name = args.get(0).unwrap();
-    let input_file_path = args.get(1).expect(format!("Usage: {executable_name} <input file path>").as_str());
-    let input = fs::read_to_string(input_file_path).expect("Should have been able to read the file.");
+    let input = input_reader::read_file();
     let score_rules_one = HashMap::from([
         ("A", HashMap::from([
             ("X", 3 + 1),
@@ -46,11 +43,12 @@ fn main() {
 }
 
 fn get_score(input: &String, score_rules: &HashMap<&str, HashMap<&str, i32>>) -> i32 {
-    let mut score = 0;
-    for round in input.split('\n') {
-        if round.is_empty() {continue;}
-        let [shape_a, shape_b] = <[&str; 2]>::try_from(round.split_whitespace().take(2).collect::<Vec<&str>>()).ok().unwrap();
-        score += score_rules.get(shape_a).unwrap().get(shape_b).unwrap();
-    }
-    return score;
+    return input
+        .split('\n')
+        .filter(|round| !round.is_empty())
+        .map(|round| {
+            let [shape_a, shape_b] = <[&str; 2]>::try_from(round.split_whitespace().take(2).collect::<Vec<&str>>()).ok().unwrap();
+            return score_rules.get(shape_a).unwrap().get(shape_b).unwrap();
+        })
+        .sum();
 }
