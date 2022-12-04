@@ -16,12 +16,10 @@ fn main() {
     let sum_of_badges: u16 = input.split('\n').collect::<Vec<&str>>().chunks(3).map(|group| -> u16 {
         let rucksacks = group.iter().map(|elf| elf.chars().collect()).collect::<Vec<Vec<char>>>();
         return match &rucksacks[..] {
-            [ rucksack_a, rucksack_b, rucksack_c ] => {
-                let badge = rucksack_a.iter().find(|item| {
+            [ rucksack_a, rucksack_b, rucksack_c ] =>
+                item_to_priority(rucksack_a.iter().find(|item|
                     rucksack_b.contains(item) && rucksack_c.contains(item)
-                }).unwrap();
-                item_to_priority(badge)
-            },
+                ).unwrap()),
             _ => panic!("Group did not contain three rucksacks.")
         }
     }).sum();
