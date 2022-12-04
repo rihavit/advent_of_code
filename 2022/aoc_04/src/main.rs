@@ -22,16 +22,23 @@ impl TaskRange {
     fn contains(&self, other: &TaskRange) -> bool {
         self.from <= other.from && self.to >= other.to
     }
+
+    fn overlaps(&self, other: &TaskRange) -> bool {
+        (self.from >= other.from && self.from <= other.to) || (other.from >= self.from && other.from <= self.to)
+    }
 }
 
 fn main() {
     let input = input_reader::read_file();
-    let overlapping_count = input.split('\n').filter(|pair| {
-        if pair.is_empty() { return false }
+    let mut containing_count: usize = 0;
+    let mut overlapping_count: usize = 0;
+    for pair in input.split('\n').filter(|pair| !pair.is_empty()) {
         let ranges = pair.split(',').collect::<Vec<&str>>();
         let range_a = TaskRange::parse_range(ranges.get(0).unwrap());
         let range_b = TaskRange::parse_range(ranges.get(1).unwrap());
-        range_a.contains(&range_b) || range_b.contains(&range_a)
-    }).count();
+        if range_a.contains(&range_b) || range_b.contains(&range_a) {containing_count += 1};
+        if range_a.overlaps(&range_b) { overlapping_count += 1 };
+    }
+    println!("Containing count: {containing_count}");
     println!("Overlapping count: {overlapping_count}");
 }
