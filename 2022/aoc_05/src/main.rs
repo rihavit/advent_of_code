@@ -1,5 +1,3 @@
-extern crate core;
-
 use lazy_static::lazy_static;
 use regex::Regex;
 use input_reader;
@@ -37,16 +35,17 @@ fn perform(operation: &str, ship: &mut Vec<Vec<char>>) {
     let instructions: Vec<usize> = re.captures_iter(operation)
         .map(|m| m[0].parse::<usize>().unwrap()).collect();
     match (instructions.get(0), instructions.get(1), instructions.get(2)) {
-        (Some(&how_many), Some(&from), Some(&to)) => {
-            for _ in 0..how_many {
-                move_item(ship, from, to);
-            }
-        }
+        (Some(&how_many), Some(&from), Some(&to)) => move_items(ship, how_many, from, to),
         _ => panic!("Instruction unclear.")
     }
 }
 
-fn move_item(ship: &mut Vec<Vec<char>>, from: usize, to: usize) {
-    let item = ship.get_mut(from-1).unwrap().pop().unwrap();
-    ship.get_mut(to-1).unwrap().push(item);
+fn move_items(ship: &mut Vec<Vec<char>>, how_many: usize, from: usize, to: usize) {
+    let from = from - 1;
+    let to = to - 1;
+    let at = ship.get(from).unwrap().len() - how_many;
+    for _ in 0..how_many {
+        let item = ship.get_mut(from).unwrap().remove(at);
+        ship.get_mut(to).unwrap().push(item);
+    }
 }
