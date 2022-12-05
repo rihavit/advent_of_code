@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-mod input_reader;
+use input_reader;
 
 fn main() {
     let input = input_reader::read_file();

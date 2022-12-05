@@ -2,8 +2,7 @@ extern crate core;
 
 use lazy_static::lazy_static;
 use regex::Regex;
-
-mod input_reader;
+use input_reader;
 
 fn main() {
     let input = input_reader::read_file();

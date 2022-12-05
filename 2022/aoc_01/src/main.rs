@@ -1,12 +1,8 @@
-use std::{env, fs};
 use std::cmp::max;
+use input_reader;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let executable_name = args.get(0).unwrap();
-    let input_file_path = args.get(1).expect(format!("Usage: {executable_name} <input file path>").as_str());
-
-    let input = fs::read_to_string(input_file_path).expect("Should have been able to read the file.");
+    let input = input_reader::read_file();
     let elves: Vec<&str> = input.split("\n\r\n").collect();
     let mut top_three: Vec<u32> = Vec::new();
     top_three.reserve(3);

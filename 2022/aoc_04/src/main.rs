@@ -1,4 +1,4 @@
-mod input_reader;
+use input_reader;
 
 struct TaskRange {
     from: u8,
